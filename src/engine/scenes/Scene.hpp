@@ -12,5 +12,4 @@ public:
 
 private:
 	std::vector<std::unique_ptr<Entity>> entities;
-	//std::vector<Script> scripts;
 };

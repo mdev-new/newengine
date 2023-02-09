@@ -6,17 +6,26 @@
 
 VertexArray *va;
 
-Engine::Engine() {
+Engine::Engine(InputManager *inp)
+ : shouldQuit(false),
+  inputManager(inp)
+{
 	va = new VertexArray({-0.25f, -0.25f, 0.1f,
 						  0.25f, -0.25f, 0.1f,
 						  0.25f, 0.25f, 0.1f,
 						  -0.25f, 0.25f, 0.1f
 						 }, {0, 1, 2, 2, 3, 0});
+
 	glClearColor(1.0, 1.0, 0.0, 1.0);
+}
+
+Engine::~Engine() {
+	delete va;
 }
 
 void Engine::update() {
 	//input.update();
+	scriptManager.update();
 	if(currentScene != nullptr) currentScene->update();
 }
 
@@ -26,8 +35,4 @@ void Engine::render() {
 	va->render();
 
 	glFlush();
-}
-
-bool Engine::shouldQuit() {
-	return false;
 }

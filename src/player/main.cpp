@@ -5,6 +5,10 @@
 
 #include "engine/Engine.hpp"
 
+std::queue<int> pressedKeys;
+std::unordered_set<int> heldKeys;
+InputManager::MouseStatus status;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
@@ -31,9 +35,9 @@ int main() {
 	}
 	glfwMakeContextCurrent(window);
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		printf("Failed to initialize GLAD\n");
+	// gladloadgl comes from libengine.so
+	if(!gladLoadGL()) {
+		printf("cannot load gl\n");
 		return -1;
 	}
 
@@ -41,12 +45,14 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetKeyCallback(window, key_callback);
 
-	Engine engine;
+	Engine engine(new InputManager(&pressedKeys, &heldKeys, &status));
 
-	while(!glfwWindowShouldClose(window) && !engine.shouldQuit()) {
+	while(!glfwWindowShouldClose(window) && !engine.shouldQuit) {
 		glfwSwapBuffers(window);
 		engine.update();
 		engine.render();
 		glfwPollEvents();
 	}
+	
+	glfwTerminate();
 }

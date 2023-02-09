@@ -1,2 +1,5 @@
 Notes from porting NewEngine from Batch to C++
 ----------------------------------------------
+
+Scripts effectively processes and are independent of scenes
+Working with text based assets will be hard (making opengl textures from text)
