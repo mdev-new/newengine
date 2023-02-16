@@ -1,8 +1,14 @@
 #pragma once
-#include "global.hpp"
+
+#include <stdint.h>
 
 class Shader {
 public:
-	Shader(const char *source);
+	Shader(const char *vtFilename, const char *frFilename);
 
+	void bind();
+	void unbind();
+
+private:
+	uint32_t prgmId;
 };

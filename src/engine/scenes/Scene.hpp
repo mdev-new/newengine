@@ -1,5 +1,4 @@
 #pragma once
-#include "global.hpp"
 
 #include "entities/Entity.hpp"
 #include <vector>

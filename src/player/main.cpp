@@ -5,18 +5,23 @@
 
 #include "engine/Engine.hpp"
 
+#define WINDOW_W 800
+#define WINDOW_H 600
+
 std::queue<int> pressedKeys;
 std::unordered_set<int> heldKeys;
 InputManager::MouseStatus status;
 
+Engine *engine = nullptr;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    glViewport(0, 0, width, height);
+	engine->setSize({width, height});
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	//todo pass input onto engine
+	//pressedKeys.
 }
 
 int main() {
@@ -26,7 +31,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "NewEngine Game", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(WINDOW_W, WINDOW_H, "NewEngine Game", NULL, NULL);
 	if (window == NULL)
 	{
 		printf("Window cannot be created!\n");
@@ -35,22 +40,16 @@ int main() {
 	}
 	glfwMakeContextCurrent(window);
 
-	// gladloadgl comes from libengine.so
-	if(!gladLoadGL()) {
-		printf("cannot load gl\n");
-		return -1;
-	}
+	// engine initializes opengl/glad
+	engine = new Engine(new InputManager(&pressedKeys, &heldKeys, &status), {WINDOW_W, WINDOW_H});
 
-	glViewport(0, 0, 800, 600);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetKeyCallback(window, key_callback);
 
-	Engine engine(new InputManager(&pressedKeys, &heldKeys, &status));
-
-	while(!glfwWindowShouldClose(window) && !engine.shouldQuit) {
+	while(!glfwWindowShouldClose(window) && !engine->shouldQuit) {
 		glfwSwapBuffers(window);
-		engine.update();
-		engine.render();
+		engine->update();
+		engine->render();
 		glfwPollEvents();
 	}
 	

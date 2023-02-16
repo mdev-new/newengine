@@ -1,5 +1,4 @@
 #pragma once
-#include "global.hpp"
 
 #include <queue>
 #include <unordered_set>
@@ -14,7 +13,7 @@ public:
 	};
 
 	short mouseXPos() { return this->mouseStatus->mX; }
-	short mouseYPos() { return this->mouseStatus->mX; }
+	short mouseYPos() { return this->mouseStatus->mY; }
 
 	InputManager(std::queue<int> * pressedKeys, std::unordered_set<int> * heldKeys, MouseStatus *status);
 

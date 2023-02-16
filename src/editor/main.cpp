@@ -1,5 +1,7 @@
 #include <glad/glad.h>
 
+#include "engine/Engine.hpp"
+
 #ifndef WX_PRECOMP
     #include <wx/wx.h>
 #else
@@ -10,9 +12,9 @@
 #include <wx/notebook.h>
 #include <wx/glcanvas.h>
 
-#include "engine/Engine.hpp"
+// this file is a fucking mess
 
-Engine *engine;
+Engine *engine = nullptr;
 
 class MyApp: public wxApp
 {
@@ -49,34 +51,46 @@ class TriangleCanvas : public wxGLCanvas  {
         TriangleCanvas& operator=(TriangleCanvas&& tc) = delete; 
     private:
             void OnPaint(wxPaintEvent& event);
-
-		bool glLoaded = false;
+			void Resize(wxSizeEvent& event);
 
           	wxGLContext* m_context;
+			wxGLContextAttrs *ctx_attr;
 };
+
+std::queue<int> pressedKeys;
+std::unordered_set<int> heldKeys;
+InputManager::MouseStatus status;
 
 TriangleCanvas::TriangleCanvas(wxWindow* parent, wxWindowID id, 
         const int* attribList, const wxPoint& pos, const wxSize& size,
         long style, const wxString& name, const wxPalette& palette)
 	: wxGLCanvas(parent, id, attribList, pos, size, style, name, palette)
 {
-	m_context = new wxGLContext(this);
+	ctx_attr = new wxGLContextAttrs;
+	ctx_attr->CompatibilityProfile().OGLVersion(4, 3).EndList();
+	m_context = new wxGLContext(this, NULL, ctx_attr);
+	SetCurrent(*m_context);
+
+	engine = new Engine(new InputManager(&pressedKeys, &heldKeys, &status), { 0, 0 }); // 0, 0 because GetClientSize will return 20, 20 anyway
+
 	Bind(wxEVT_PAINT, &TriangleCanvas::OnPaint, this);
+	Bind(wxEVT_SIZE, &TriangleCanvas::Resize, this);
 }
 
 TriangleCanvas::~TriangleCanvas()
 {
-	SetCurrent(*m_context);
-	//delete engine;
+	delete engine;
+}
+
+void TriangleCanvas::Resize(wxSizeEvent& event) {
+    event.Skip();
+    if(engine != nullptr) engine->setSize({event.GetSize().x, event.GetSize().y});
 }
 
 void TriangleCanvas::OnPaint(wxPaintEvent& event)
 {
 	SetCurrent(*m_context);
-	if(!glLoaded) {gladLoadGL(); engine = new Engine; glLoaded = true; }
-
 	engine->render();
-
 	SwapBuffers();
 }
 
@@ -98,7 +112,7 @@ wxEND_EVENT_TABLE()
 wxIMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit() {
-	MyFrame *frame = new MyFrame("NewEngine", wxPoint(50, 50), wxSize(800, 600));
+	MyFrame *frame = new MyFrame("NewEngine Rewritten Editor", wxPoint(50, 50), wxSize(800, 600));
     frame->Show(true);
     return true;
 }
@@ -139,9 +153,6 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     wxBoxSizer* panelSizer = new wxBoxSizer(wxHORIZONTAL);
     panelSizer->Add(notebook, 1, wxEXPAND);
     panel->SetSizer(panelSizer);
-
-	Fit();
-	Center();
 }
 
 void MyFrame::OnExit(wxCommandEvent& event)

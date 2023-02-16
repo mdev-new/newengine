@@ -6,10 +6,13 @@
 
 VertexArray *va;
 
-Engine::Engine(InputManager *inp)
+Engine::Engine(InputManager *inp, std::pair<int, int> size)
  : shouldQuit(false),
   inputManager(inp)
 {
+	gladLoadGL();
+	setSize(size);
+
 	va = new VertexArray({-0.25f, -0.25f, 0.1f,
 						  0.25f, -0.25f, 0.1f,
 						  0.25f, 0.25f, 0.1f,
@@ -23,8 +26,11 @@ Engine::~Engine() {
 	delete va;
 }
 
+void Engine::setSize(std::pair<int, int> size) {
+	glViewport(0, 0, size.first, size.second);
+}
+
 void Engine::update() {
-	//input.update();
 	scriptManager.update();
 	if(currentScene != nullptr) currentScene->update();
 }

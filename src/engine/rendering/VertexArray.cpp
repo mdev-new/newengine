@@ -3,10 +3,8 @@
 #include <glad/glad.h>
 
 VertexArray::VertexArray(std::vector<float> vertices, std::vector<char> indices, std::vector<float> texCoords)
-	: vao(0), vbo(0), tbo(0), ibo(0)
+	: vao(0), vbo(0), tbo(0), ibo(0), count(indices.size())
 {
-	count = indices.size();
-
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
@@ -24,7 +22,7 @@ VertexArray::VertexArray(std::vector<float> vertices, std::vector<char> indices,
 		glEnableVertexAttribArray(TCOORD_ATTRIB);
 	}
 
-	if(count) {
+	if(!indices.empty()) {
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(char), &indices.front(), GL_STATIC_DRAW);
