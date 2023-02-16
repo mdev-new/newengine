@@ -3,7 +3,7 @@ profile="release"
 if [[ "$OSTYPE" == "msys" ]]; then
 	so_pfx=""
 	so_ext="dll"
-	additional_editor_flags="-mwindows -Iwinlibs/wx/include -Iwinlibs/wx/mswu -Lwinlibs/wx -lwxbase32u -lwxmsw32u_core -lwxmsw32u_gl -lopengl32"
+	additional_editor_flags="-mwindows -Iwinlibs/wx/wx/include -Iwinlibs/wx/mswu -Lwinlibs/wx -lwxbase32u -lwxmsw32u_core -lwxmsw32u_gl -lopengl32"
 	additional_player_flags="-mwindows -Iwinlibs -Iwinlibs/wx/include -Lwinlibs/wx -Lwinlibs -lglfw3 -lgdi32 -luser32 -lkernel32"
 else
 	so_pfx="lib"
