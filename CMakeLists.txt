@@ -6,23 +6,12 @@ include_directories(src/engine extern src)
 add_subdirectory(extern/glfw)
 add_subdirectory(extern/wxWidgets)
 
+FILE(GLOB_RECURSE engine_src CONFIGURE_DEPENDS "src/engine/*.cpp")
+FILE(GLOB_RECURSE engine_hdr CONFIGURE_DEPENDS "src/engine/*.hpp")
+
 add_library(engine
-extern/glad/glad.c extern/glad/glad.h
-src/engine/Engine.cpp src/engine/Engine.hpp
-src/engine/assets/Asset.cpp src/engine/assets/Asset.hpp
-src/engine/entities/Entity.cpp src/engine/entities/Entity.hpp
-src/engine/input/InputManager.cpp src/engine/input/InputManager.hpp
-src/engine/rendering/shaders/Shader.cpp src/engine/rendering/shaders/Shader.hpp
-src/engine/rendering/textures/Texture.cpp src/engine/rendering/textures/Texture.hpp
-src/engine/rendering/Renderer.cpp src/engine/rendering/Renderer.hpp
-src/engine/rendering/VertexArray.cpp src/engine/rendering/VertexArray.hpp
-src/engine/scenes/Scene.cpp src/engine/scenes/Scene.hpp
-src/engine/scripting/lexer/Lexer.cpp src/engine/scripting/lexer/Lexer.hpp
-src/engine/scripting/parser/Parser.cpp src/engine/scripting/parser/Parser.hpp
-src/engine/scripting/Script.cpp src/engine/scripting/Script.hpp
-src/engine/scripting/ScriptManager.cpp src/engine/scripting/ScriptManager.hpp
-src/engine/utility/Files.cpp src/engine/utility/Files.hpp
-src/engine/utility/Hashing.cpp src/engine/utility/Hashing.hpp
+	extern/glad/glad.c extern/glad/glad.h
+	${engine_src} ${engine_hdr}
 )
 target_compile_options(engine PRIVATE
 	$<$<COMPILE_LANGUAGE:CXX>:-fpermissive -std=gnu++2b -w>
