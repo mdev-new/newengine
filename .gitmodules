@@ -7,3 +7,10 @@
 [submodule "extern/magic_enum"]
 	path = extern/magic_enum
 	url = https://github.com/Neargye/magic_enum
+[submodule "extern/glfw"]
+	path = extern/glfw
+	url = https://github.com/glfw/glfw
+	branch = master
+[submodule "extern/wxWidgets"]
+	path = extern/wxWidgets
+	url = https://github.com/wxWidgets/wxWidgets
