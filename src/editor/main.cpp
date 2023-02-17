@@ -12,6 +12,10 @@
 #include <wx/notebook.h>
 #include <wx/glcanvas.h>
 
+#ifdef _WIN32
+	#include <uxtheme.h>
+#endif
+
 // this file is a fucking mess
 
 Engine *engine = nullptr;

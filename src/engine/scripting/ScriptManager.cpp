@@ -6,11 +6,11 @@
 #include <memory>
 
 void ScriptManager::addScript(Script *s) {
-	this->scripts[std::shared_ptr<Script>(s)] = hash_str(s->name);
+	this->scripts.push_back(std::unique_ptr<Script>(s));
 }
 
 void ScriptManager::update() {
-	for (auto const& [script, name] : this->scripts) {
+	for (auto const& script : this->scripts) {
 		script->run(10);
 	}
 }
