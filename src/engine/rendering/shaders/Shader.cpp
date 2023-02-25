@@ -17,8 +17,8 @@ Shader::Shader(const char *vertexFilename, const char *fragmentFilename) {
 	uint32_t vertex = glCreateShader(GL_VERTEX_SHADER);
 	uint32_t fragment = glCreateShader(GL_FRAGMENT_SHADER);
 
-	glShaderSource(vertex, 1, &vtBuf, NULL);
-	glShaderSource(fragment, 1, &frBuf, NULL);
+	glShaderSource(vertex, 1, (char**)&vtBuf, NULL);
+	glShaderSource(fragment, 1, (char**)&frBuf, NULL);
 
 	free(vtBuf);
 	free(frBuf);

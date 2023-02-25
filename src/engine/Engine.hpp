@@ -1,4 +1,5 @@
 #pragma once
+#include "Global.hpp"
 
 #include "scenes/Scene.hpp"
 #include "scripting/ScriptManager.hpp"
@@ -9,7 +10,7 @@
 // Initialization of this depends on:
 // 1. gl context
 
-class Engine {
+class ENGINEAPI Engine {
 public:
 
 	Engine(InputManager *inp, std::pair<int, int> size);

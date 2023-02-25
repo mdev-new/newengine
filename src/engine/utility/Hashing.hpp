@@ -1,11 +1,17 @@
 #pragma once
-#include <cstdint>
+#include <stdint.h>
+
+#ifdef _GNU_
+	#define NOINLINE [[gnu::noinline]]
+#else
+	#define NOINLINE
+#endif
 
 struct Hasher {
 	uint32_t operator()(const uint32_t &h) const { return h; }
 };
 
-[[gnu::noinline]] uint32_t hash_str(char const* str, bool removeCases = false);
+NOINLINE uint32_t hash_str(char const* str, bool removeCases = false);
 
 consteval uint32_t consthash(char const* str, bool removeCases = false) {
 	uint32_t hash = 0, i = 0;

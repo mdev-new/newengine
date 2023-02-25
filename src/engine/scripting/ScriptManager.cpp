@@ -6,7 +6,7 @@
 #include <memory>
 
 void ScriptManager::addScript(Script *s) {
-	this->scripts.push_back(std::unique_ptr<Script>(s));
+	this->scripts.push_back(std::shared_ptr<Script>(s));
 }
 
 void ScriptManager::update() {

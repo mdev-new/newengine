@@ -11,5 +11,5 @@ public:
 	void addScript(Script *s);
 	void update();
 private:
-	std::vector<std::unique_ptr<Script>> scripts;
+	std::vector<std::shared_ptr<Script>> scripts;
 };

@@ -1,9 +1,10 @@
 #pragma once
+#include "Global.hpp"
 
 #include <queue>
 #include <unordered_set>
 
-class InputManager {
+class ENGINEAPI InputManager {
 public:
 	struct MouseStatus {
 		short mX;

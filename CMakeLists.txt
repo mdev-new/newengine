@@ -3,6 +3,11 @@ cmake_minimum_required(VERSION 3.0)
 
 include_directories(src/engine extern src)
 
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	add_compile_options(-pipe)
 endif()
@@ -21,9 +26,13 @@ add_library(engine
 	${engine_src} ${engine_hdr}
 )
 
-target_compile_options(engine PRIVATE
-	$<$<COMPILE_LANGUAGE:CXX>:-fpermissive -std=gnu++2b -w>
-)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	target_compile_options(engine PRIVATE
+		$<$<COMPILE_LANGUAGE:CXX>:-fpermissive -w>
+	)
+endif()
+
+target_compile_definitions(engine PRIVATE BUILD_DLL)
 
 target_link_libraries(engine glm)
 
@@ -39,10 +48,10 @@ if(WIN32)
 	target_sources(editor PRIVATE extern/wxWidgets/include/wx/msw/wx.rc)
 endif()
 
-target_link_libraries(editor wx::core wx::base wx::gl engine)
+target_link_libraries(editor engine wx::core wx::base wx::gl)
 set_target_properties(editor PROPERTIES WIN32_EXECUTABLE 1)
 
 # --- PLAYER
 add_executable(player src/player/main.cpp src/engine/Engine.hpp)
-target_link_libraries(player glfw engine)
+target_link_libraries(player engine glfw)
 set_target_properties(player PROPERTIES WIN32_EXECUTABLE 1)

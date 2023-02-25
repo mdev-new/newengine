@@ -1,6 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#ifdef _MSC_VER
+	#include <Windows.h>
+#endif
+
 #include <cstdio>
 
 #include "engine/Engine.hpp"
@@ -24,7 +28,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//pressedKeys.
 }
 
-int main() {
+#ifdef _MSC_VER
+	int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow) {
+#else
+	int main() {
+#endif
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
